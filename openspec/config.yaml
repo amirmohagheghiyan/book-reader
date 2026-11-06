@@ -14,9 +14,11 @@ context: |
   tasks.md in English.
 
   Project: جزوه‌ساز — a place where a student keeps and tracks the specialized
-  books they must read each month, uploads each book's PDF, and builds a
-  «جزوه» of ordered blocks with structural diagrams (concept map, steps,
-  table) that exports to Word and PDF. A Persian, right-to-left web product.
+  books they must read each month, uploads each book's PDF files, and keeps
+  an editable «جزوه» of ordered blocks with structural diagrams (concept
+  map, steps, table), filled by hand or by an AI service, with a print view
+  for PDF and a Word export. Build order: library, PDF upload, جزوه editor,
+  AI generation, Word export. A Persian, right-to-left web product.
   Stack: Django with server-rendered templates and Bootstrap (local static
   files), SQLite, Python managed with uv. Runs locally only.
   Boundary: no login or sign-up, no deployment, no email, no REST API, no

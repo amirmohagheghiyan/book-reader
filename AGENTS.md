@@ -31,10 +31,11 @@ unless the user explicitly asks:
 
 ### Allowed by the owner's decision (2026-11-06)
 
-- **PDF upload on this machine.** The user uploads a book as a PDF file from
-  the same computer the product runs on. Files are stored locally under
-  `media/` (git-ignored) and never sent anywhere except to the AI service
-  below as part of building a جزوه. Only `.pdf` is accepted.
+- **PDF upload on this machine.** The user uploads one or more PDF files per
+  book from the same computer the product runs on, and deletes each file on
+  its own. Files are stored locally under `media/` (git-ignored) and never
+  sent anywhere except to the AI service below as part of building a جزوه.
+  Only `.pdf` is accepted.
 - **One AI service.** The running product may make exactly one kind of
   network request: calling an AI model to build a جزوه from a book. The
   service address, model name, and key are read from a git-ignored `.env`
