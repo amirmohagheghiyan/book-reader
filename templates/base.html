@@ -1,0 +1,57 @@
+{% load static %}<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}جزوه‌ساز{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/vendor/bootstrap.rtl.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <a class="visually-hidden-focusable position-absolute top-0 start-0 m-2 p-2 bg-body" href="#main">پرش به محتوا</a>
+
+  <header>
+    <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom" aria-label="ناوبری اصلی">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'core:home' %}">جزوه‌ساز</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"
+                aria-controls="main-nav" aria-expanded="false" aria-label="نمایش یا پنهان‌کردن منو">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-nav">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link{% if request.resolver_match.url_name == 'home' %} active{% endif %}"
+                 {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}
+                 href="{% url 'core:home' %}">خانه</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container py-4 flex-grow-1">
+    {% if messages %}
+      <div class="mb-3" role="status" aria-live="polite">
+        {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="بستن"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-top py-3 mt-auto">
+    <div class="container small text-body-secondary">
+      جزوه‌ساز — نسخه‌ی کارگاهی، فقط روی همین دستگاه.
+    </div>
+  </footer>
+
+  <script src="{% static 'js/vendor/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

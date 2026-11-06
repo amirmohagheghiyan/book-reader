@@ -1,0 +1,25 @@
+/*
+ * theme.css — tokens and Bootstrap overrides for جزوه‌ساز.
+ * Prompt 1: neutral placeholder only (system-ui font, no brand colors).
+ * Prompt 2 (design system) fills the real tokens from design.md.
+ */
+
+:root {
+  --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --bs-body-line-height: 1.8;
+  --bs-border-radius: 0.5rem;
+}
+
+body {
+  font-family: var(--bs-body-font-family);
+  line-height: var(--bs-body-line-height);
+}
+
+/* Latin text, numbers in code, URLs and emails read left-to-right. */
+code,
+kbd,
+pre,
+[dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

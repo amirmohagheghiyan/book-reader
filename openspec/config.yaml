@@ -1,0 +1,63 @@
+# openspec/config.yaml — Django + Bootstrap workshop project
+# Replace my-project/openspec/config.yaml (created by `openspec init`) with this file.
+# Full rules live in AGENTS.md, product.md, and root design.md.
+# `context` goes into every artifact, `rules` into the matching artifact,
+# `operations` into apply and archive.
+
+schema: spec-driven
+
+context: |
+  Language: Persian (fa). Write proposal.md and the requirement and scenario
+  prose of specs in plain Persian a non-technical product owner can read.
+  Keep OpenSpec headings, delta section names, SHALL/MUST, GIVEN/WHEN/THEN,
+  code, paths, and commands in English. Write a change's design.md and
+  tasks.md in English.
+
+  Project: جزوه‌ساز — a place where a student keeps and tracks the specialized
+  books they must read each month; its vision is a summarized, visual
+  «جزوه» for each thick book. A Persian, right-to-left web product.
+  Stack: Django with server-rendered templates and Bootstrap (local static
+  files), SQLite, Python managed with uv. Runs locally only.
+  Boundary: no login or sign-up, no deployment, no email, no external
+  service, no REST API, no JavaScript framework, no extra Python package
+  without the user's approval.
+
+  Read before writing any artifact:
+  - AGENTS.md: implementation rules, boundary, how to talk with the user.
+  - product.md: approved product context, not approval to build everything.
+  - design.md (repository root): the shared visual system. A change's own
+    design.md is its technical design only.
+
+  The user is not a developer. Ask only product questions, in plain Persian,
+  at most three at a time. Decide technical details yourself.
+
+rules:
+  proposal:
+    - One bounded change with one purpose. List what is out of scope.
+    - Explain in plain Persian why the change is needed and who benefits.
+    - Name the affected capabilities and existing main specs.
+    - List unanswered product questions instead of guessing.
+  specs:
+    - Only observable behavior (what the user sees and does). No frameworks, file paths, model or view names.
+    - Every requirement has at least one scenario. Cover empty, error, validation, and confirmation states when they apply.
+    - Say in plain words what happens to stored information (kept, changed, removed). Never claim the data is secure or private.
+    - For a MODIFIED requirement, copy the full current requirement with all scenarios, then edit it.
+  design:
+    - English. Record the Django app, models and fields, migrations, URLs, views, forms, templates, and admin registration.
+    - Reuse templates/components and the tokens in root design.md. Thin views; rules in models or forms.
+    - Never plan to edit an applied migration. No login, API, external request, or new package without approval.
+  tasks:
+    - English. Small checkbox tasks grouped by area, each naming the files it touches.
+    - End with verification: manage.py check, makemigrations --check --dry-run, test, and each scenario in the browser at phone and desktop width in RTL.
+    - Add a documentation task only when facts in AGENTS.md, design.md, or product.md change.
+
+operations:
+  apply:
+    guidance:
+      - Report progress and blocking product questions in plain Persian.
+      - Mark a task [x] only after its work and checks pass. Ask before widening scope.
+      - When done, tell the user exactly what to open and try, then suggest running openspec validate and /opsx:verify.
+  archive:
+    guidance:
+      - Archive only when no CRITICAL verify finding remains and the user decided on every WARNING.
+      - Sync delta specs into openspec/specs, update the Delivery Status table in product.md, commit, and summarize in plain Persian.

@@ -1,0 +1,8 @@
+[project]
+name = "book-reader"
+version = "0.1.0"
+description = "جزوه‌ساز — Django + Bootstrap workshop project (local only)"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=6.1.3",
+]
