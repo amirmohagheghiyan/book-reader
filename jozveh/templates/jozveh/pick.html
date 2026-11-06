@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}افزودن بلوک — {{ jozveh_title }} — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% include "components/page-header.html" with title="افزودن بلوک" lead="نوع بلوک تازه را انتخاب کنید." breadcrumbs=breadcrumbs %}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 mb-4">
+  {% for kind in kinds %}
+  <div class="col">
+    {% include "components/card.html" with title=kind.label text=kind.text action_url=kind.url action_label="انتخاب" %}
+  </div>
+  {% endfor %}
+</div>
+
+<a href="{% url 'jozveh:editor' book.pk %}" class="btn btn-outline-primary">انصراف</a>
+{% endblock %}

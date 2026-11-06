@@ -191,6 +191,51 @@ class BookCreateUpdateDeleteTests(TestCase):
         response = self.client.get(reverse("books:update", args=[book.pk]))
         self.assertContains(response, "3 فایل PDF این کتاب هم پاک می‌شود")
 
+    def test_list_shows_block_and_file_counts_without_multiplying(self):
+        from bookfiles.models import BookFile
+        from jozveh.models import Block
+
+        with_both = make_book(title="حقوق مدنی")
+        empty = make_book(title="حقوق تجارت")
+        for i in range(2):
+            BookFile.objects.create(book=with_both, file=f"books/{with_both.pk}/{i}.pdf", original_name=f"{i}.pdf", size=1)
+        for i in range(5):
+            Block.append(with_both, Block.Kind.TEXT, {"text": str(i)})
+        response = self.client.get("/")
+        listed = {b.title: b for b in response.context["books"]}
+        self.assertEqual((listed["حقوق مدنی"].file_count, listed["حقوق مدنی"].block_count), (2, 5))
+        self.assertEqual(listed["حقوق تجارت"].block_count, 0)
+        self.assertContains(response, reverse("jozveh:editor", args=[with_both.pk]))
+        self.assertContains(response, reverse("jozveh:editor", args=[empty.pk]))
+        self.assertContains(response, 'جزوه <span class="badge rounded-pill text-bg-primary">5</span>')
+        self.assertContains(response, 'جزوه <span class="badge rounded-pill text-bg-secondary">0</span>')
+
+    def test_delete_warning_with_blocks_and_with_both(self):
+        from bookfiles.models import BookFile
+        from jozveh.models import Block
+
+        book = make_book()
+        for i in range(5):
+            Block.append(book, Block.Kind.TEXT, {"text": str(i)})
+        self.assertEqual(book.delete_warning, "این کار قابل بازگشت نیست و جزوه‌ی این کتاب (5 بلوک) هم پاک می‌شود.")
+        for i in range(3):
+            BookFile.objects.create(book=book, file=f"books/{book.pk}/{i}.pdf", original_name=f"{i}.pdf", size=1)
+        self.assertEqual(
+            book.delete_warning,
+            "این کار قابل بازگشت نیست و 3 فایل PDF و جزوه‌ی این کتاب (5 بلوک) هم پاک می‌شود.",
+        )
+        response = self.client.get("/")
+        self.assertContains(response, "3 فایل PDF و جزوه‌ی این کتاب (5 بلوک) هم پاک می‌شود.")
+
+    def test_deleting_book_removes_its_blocks(self):
+        from jozveh.models import Block
+
+        book = make_book()
+        Block.append(book, Block.Kind.TEXT, {"text": "الف"})
+        self.client.post(reverse("books:delete", args=[book.pk]))
+        self.assertEqual(Block.objects.count(), 0)
+        self.assertEqual(self.client.get(reverse("jozveh:editor", args=[book.pk])).status_code, 404)
+
     def test_unknown_pk_is_404(self):
         self.assertEqual(self.client.get(reverse("books:update", args=[999])).status_code, 404)
         self.assertEqual(self.client.post(reverse("books:delete", args=[999])).status_code, 404)

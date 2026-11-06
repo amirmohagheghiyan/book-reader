@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}حذف بلوک — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% include "components/page-header.html" with title="حذف بلوک" lead=jozveh_title breadcrumbs=breadcrumbs %}
+
+<div class="row">
+  <div class="col-12 col-lg-8 col-xl-6">
+    <div class="card card-elevated">
+      <div class="card-body">
+        <h2 class="h5 mb-2">«{{ object.summary }}» حذف شود؟</h2>
+        <p class="text-body-secondary">این کار قابل بازگشت نیست.</p>
+        <form method="post" class="d-grid d-sm-flex gap-2">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">حذف</button>
+          <a href="{% url 'jozveh:editor' book.pk %}#block-{{ object.pk }}" class="btn btn-outline-primary">انصراف</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+<div class="table-responsive jozveh-table">
+  <table class="table table-bordered align-middle mb-0">
+    <thead>
+      <tr>{% for cell in block.data.header %}<th scope="col">{{ cell }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      {% for row in block.data.rows %}
+      <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

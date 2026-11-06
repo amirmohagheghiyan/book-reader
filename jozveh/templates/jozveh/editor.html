@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ jozveh_title }} — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% url 'jozveh:pick' book.pk as pick_url %}
+{% include "components/page-header.html" with title=jozveh_title lead=book.author breadcrumbs=breadcrumbs action_url=pick_url action_label="افزودن بلوک" %}
+
+{% if not blocks %}
+  {% include "components/empty-state.html" with title="این جزوه هنوز بلوکی ندارد" text="با افزودن عنوان، متن، نکته، مراحل، جدول یا نقشه‌ی مفهومی، جزوه‌ی این کتاب را بسازید." action_url=pick_url action_label="افزودن بلوک" %}
+{% else %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <p class="text-body-secondary mb-0">{{ blocks|length }} بلوک</p>
+    <a href="{% url 'jozveh:print' book.pk %}" class="btn btn-outline-primary">نمای چاپ</a>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-xl-10">
+      {% for block in blocks %}
+      <section id="block-{{ block.pk }}" class="jozveh-block card mb-3" aria-label="{{ block.summary }}">
+        <div class="card-body">
+          <span class="badge rounded-pill text-bg-light border mb-2">{{ block.get_kind_display }}</span>
+          {% include block.template_name %}
+        </div>
+        <div class="card-footer">
+          {% include "jozveh/_block_toolbar.html" with first=forloop.first last=forloop.last %}
+        </div>
+      </section>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% for block in blocks %}
+    {% url 'jozveh:delete' book.pk block.pk as delete_url %}{% with pk_str=block.pk|stringformat:"s" %}
+    {% include "components/confirm-modal.html" with modal_id="delete-block-"|add:pk_str item_name=block.summary action_url=delete_url %}
+    {% endwith %}
+  {% endfor %}
+{% endif %}
+{% endblock %}

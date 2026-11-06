@@ -189,3 +189,65 @@ code, kbd, pre, [dir="ltr"] { direction: ltr; unicode-bidi: isolate; }
 .ds-section { scroll-margin-top: 1.5rem; }
 .ds-swatch { height: 4.5rem; border-radius: var(--bs-border-radius); background: var(--swatch); border: 1px solid var(--bs-border-color-translucent); }
 .ds-sample { padding: 1rem; border: 1px dashed var(--jz-border-strong); border-radius: var(--bs-border-radius); }
+
+/* ---------- جزوه blocks (shared by the editor and the print view) ---------- */
+.jozveh-block { scroll-margin-top: 1rem; }
+.jozveh-block:target { border-color: var(--jz-primary); box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color); animation: jz-flash 1.6s ease-out; }
+@keyframes jz-flash { from { background-color: var(--jz-primary-soft); } to { background-color: var(--jz-surface); } }
+@media (prefers-reduced-motion: reduce) { .jozveh-block:target { animation: none; } }
+.jozveh-text p:last-child, .jozveh-note p:last-child { margin-bottom: 0; }
+.jozveh-note {
+  background: var(--jz-primary-soft); color: var(--jz-text);
+  border-inline-start: 4px solid var(--jz-primary); border-radius: var(--bs-border-radius);
+  padding: 0.75rem 1rem;
+}
+.jozveh-steps { list-style: none; counter-reset: jz-step; margin: 0; padding: 0; }
+.jozveh-steps li { counter-increment: jz-step; position: relative; min-height: 2.25rem; padding-inline-start: 3rem; padding-block: 0.3rem 0.6rem; }
+.jozveh-steps li::before {
+  content: counter(jz-step); position: absolute; inset-inline-start: 0; top: 0.2rem;
+  display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem;
+  border-radius: 50%; background: var(--jz-primary); color: #fff; font-weight: 700;
+}
+.jozveh-steps li:not(:last-child)::after {
+  content: ""; position: absolute; inset-inline-start: calc(1rem - 1px); top: 2.3rem; bottom: 0;
+  border-inline-start: 2px solid var(--jz-primary-soft-border);
+}
+.jozveh-table thead th { --bs-table-bg: var(--jz-primary-soft); --bs-table-color: var(--jz-primary-emphasis); }
+.jozveh-map-center {
+  position: relative; width: fit-content; max-width: 100%; margin-inline: auto;
+  padding: 0.5rem 1.25rem; border-radius: var(--bs-border-radius-lg);
+  background: var(--jz-gradient-brand); color: #fff; font-weight: 700; text-align: center;
+}
+.jozveh-map-center::after, .jozveh-map-branch::before {
+  content: ""; position: absolute; inset-inline-start: 50%; height: 1rem;
+  border-inline-start: 2px solid var(--jz-primary-soft-border);
+}
+.jozveh-map-center::after { top: 100%; }
+.jozveh-map-branches {
+  list-style: none; margin: 1rem 0 0; padding: 1rem 0 0;
+  border-top: 2px solid var(--jz-primary-soft-border);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem 0.75rem;
+}
+.jozveh-map-branch {
+  position: relative; padding: 0.5rem 0.75rem; background: var(--jz-surface);
+  border: 1px solid var(--jz-primary-soft-border); border-radius: var(--bs-border-radius);
+}
+.jozveh-map-branch::before { bottom: 100%; }
+.jozveh-map-label { display: block; font-weight: 700; color: var(--jz-primary-emphasis); }
+.jozveh-map-children { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.4rem 0 0; padding: 0; }
+.jozveh-map-children li { padding: 0.05rem 0.6rem; border-radius: 50rem; background: var(--jz-primary-soft); font-size: 0.9em; }
+
+/* ---------- جزوه print view ---------- */
+.jozveh-print { background: var(--jz-surface); }
+.jozveh-print-bar { position: sticky; top: 0; z-index: 10; background: var(--jz-surface); border-bottom: 1px solid var(--jz-border); }
+.jozveh-print-page { max-width: 52rem; }
+.jozveh-print-header { padding-bottom: 0.75rem; border-bottom: 2px solid var(--jz-primary); }
+@media print {
+  @page { margin: 1.5cm; }
+  .jozveh-print { background: var(--jz-surface); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .jozveh-print-page { max-width: none; padding: 0 !important; }
+  .jozveh-print * { box-shadow: none !important; }
+  .jozveh-note, .jozveh-steps, .jozveh-map, .jozveh-table table { break-inside: avoid; }
+  .jozveh-heading, .jozveh-print-header { break-after: avoid; }
+  .jozveh-table.table-responsive { overflow: visible; }
+}

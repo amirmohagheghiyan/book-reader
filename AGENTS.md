@@ -141,6 +141,10 @@ books/                  # کتابخانه‌ی ماهانه: Book model, dashbo
 bookfiles/              # فایل‌های PDF هر کتاب: BookFile model, upload/list/delete at /books/<pk>/files/
   validators.py         # validate_pdf: .pdf name and %PDF- header, no package
   templates/bookfiles/  # bookfile_list, bookfile_confirm_delete
+jozveh/                 # ویرایش جزوه: Block model (kind, position, JSON data), editor and print view at /books/<pk>/jozveh/
+  forms.py              # one form per block kind: typed text <-> block data
+  templates/jozveh/     # editor, pick, block_form, block_confirm_delete, print; blocks/<kind>.html shared by editor and print
+  tests/                # test_models, test_forms, test_views, test_templates
 <feature>/              # one Django app per product feature
 openspec/               # config.yaml, specs/, changes/
 ```

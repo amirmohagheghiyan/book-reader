@@ -1,0 +1,16 @@
+{# Block toolbar. Params: block, book (context), first, last #}
+<div class="d-flex flex-wrap align-items-center gap-2">
+  <form method="post" action="{% url 'jozveh:move' book.pk block.pk %}">
+    {% csrf_token %}
+    <input type="hidden" name="direction" value="up">
+    <button type="submit" class="btn btn-outline-primary btn-sm" aria-label="بالا بردن «{{ block.summary }}»"{% if first %} disabled{% endif %}>بالا</button>
+  </form>
+  <form method="post" action="{% url 'jozveh:move' book.pk block.pk %}">
+    {% csrf_token %}
+    <input type="hidden" name="direction" value="down">
+    <button type="submit" class="btn btn-outline-primary btn-sm" aria-label="پایین بردن «{{ block.summary }}»"{% if last %} disabled{% endif %}>پایین</button>
+  </form>
+  <a href="{% url 'jozveh:edit' book.pk block.pk %}" class="btn btn-outline-primary btn-sm" aria-label="ویرایش «{{ block.summary }}»">ویرایش</a>
+  <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-block-{{ block.pk }}" aria-label="حذف «{{ block.summary }}»">حذف</button>
+  <a href="{% url 'jozveh:pick' book.pk %}?after={{ block.pk }}" class="btn btn-link btn-sm ms-auto">افزودن بعد از این</a>
+</div>

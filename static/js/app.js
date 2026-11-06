@@ -1,4 +1,4 @@
-/* app.js — small Bootstrap helpers: tooltips, toasts, and swatch color codes. */
+/* app.js — small Bootstrap helpers: tooltips, toasts, swatch color codes, and the print button. */
 (function () {
   "use strict";
 
@@ -11,6 +11,11 @@
       var toast = document.getElementById(btn.dataset.toastTarget);
       if (toast) bootstrap.Toast.getOrCreateInstance(toast).show();
     });
+  });
+
+  // The جزوه print view: open the browser's print dialog (Save as PDF lives there).
+  document.querySelectorAll("[data-print]").forEach(function (btn) {
+    btn.addEventListener("click", function () { window.print(); });
   });
 
   // Show the real computed color of each swatch as a hex code.

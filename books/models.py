@@ -72,10 +72,18 @@ class Book(models.Model):
 
     @property
     def delete_warning(self):
-        """Body of the delete confirmation; names the PDF files that go with the book."""
-        count = getattr(self, "file_count", None)
-        if count is None:
-            count = self.files.count()
-        if not count:
-            return "این کار قابل بازگشت نیست."
-        return f"این کار قابل بازگشت نیست و {count} فایل PDF این کتاب هم پاک می‌شود."
+        """Body of the delete confirmation; names the PDF files and the جزوه that go with the book."""
+        files = getattr(self, "file_count", None)
+        if files is None:
+            files = self.files.count()
+        blocks = getattr(self, "block_count", None)
+        if blocks is None:
+            blocks = self.blocks.count()
+        start = "این کار قابل بازگشت نیست"
+        if files and blocks:
+            return f"{start} و {files} فایل PDF و جزوه‌ی این کتاب ({blocks} بلوک) هم پاک می‌شود."
+        if files:
+            return f"{start} و {files} فایل PDF این کتاب هم پاک می‌شود."
+        if blocks:
+            return f"{start} و جزوه‌ی این کتاب ({blocks} بلوک) هم پاک می‌شود."
+        return f"{start}."

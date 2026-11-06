@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'core',
     'books',
     'bookfiles',
+    'jozveh',
 ]
 
 MIDDLEWARE = [

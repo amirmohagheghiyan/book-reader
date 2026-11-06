@@ -123,6 +123,32 @@ Bootstrap markup; shared pieces in `templates/components/`:
   `static/js/app.js`.
 - **Data:** cards for items, tables in `.table-responsive`, list groups.
 
+### جزوه blocks and print view
+
+Each block kind has one partial in `jozveh/templates/jozveh/blocks/`, used
+by both the editor and the print view, so the two always match. Classes
+live in `theme.css` and use the tokens above only:
+
+| Block | Look |
+| --- | --- |
+| عنوان | `h2` (sized `h3`), heading color |
+| متن | plain paragraphs, split on blank lines |
+| نکته | `.jozveh-note`: primary subtle background, 4px primary bar on the inline-start side |
+| مراحل | `.jozveh-steps`: numbered primary circles joined by a light vertical line |
+| جدول | Bootstrap `.table-bordered` in `.table-responsive`; header row on primary subtle |
+| نقشه‌ی مفهومی | `.jozveh-map`: center on the brand gradient, branches as bordered cards in an auto-fit grid (one column on phone), children as soft pills; connectors are borders, no SVG |
+
+- **Editor:** each block is a card with its kind badge and a toolbar
+  (بالا، پایین، ویرایش، حذف، افزودن بعد از این). «بالا» is disabled on the
+  first block and «پایین» on the last. After add or move the page lands on
+  the block (`:target`), which gets a focus ring and a short soft flash
+  (no flash with reduced motion).
+- **Print view:** a standalone page without navbar or footer. A sticky bar
+  with «بازگشت به ویرایش» and «چاپ یا ذخیره‌ی PDF» is hidden on paper
+  (`d-print-none`). Under `@media print`: 1.5 cm page margins, no shadows,
+  colors kept (`print-color-adjust: exact`), and notes, steps, maps, and
+  tables avoid splitting across pages.
+
 ## Microcopy
 
 - Buttons say what they do: «ذخیره»، «افزودن»، «حذف».

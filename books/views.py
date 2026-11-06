@@ -27,8 +27,15 @@ class BookListView(ListView):
 
     def get_queryset(self):
         # Meta.ordering is ignored once a query groups (annotate + Count), so repeat it.
+        # distinct=True: two joined reverse relations would otherwise multiply the counts.
         queryset = (
-            super().get_queryset().annotate(file_count=Count("files")).order_by(*Book._meta.ordering)
+            super()
+            .get_queryset()
+            .annotate(
+                file_count=Count("files", distinct=True),
+                block_count=Count("blocks", distinct=True),
+            )
+            .order_by(*Book._meta.ordering)
         )
         query, status = self.get_filters()
         if query:

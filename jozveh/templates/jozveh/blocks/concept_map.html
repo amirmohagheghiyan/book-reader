@@ -1,0 +1,15 @@
+<figure class="jozveh-map mb-0" aria-label="نقشه‌ی مفهومی: {{ block.data.center }}">
+  <div class="jozveh-map-center">{{ block.data.center }}</div>
+  <ul class="jozveh-map-branches">
+    {% for branch in block.data.branches %}
+    <li class="jozveh-map-branch">
+      <span class="jozveh-map-label">{{ branch.label }}</span>
+      {% if branch.children %}
+      <ul class="jozveh-map-children">
+        {% for child in branch.children %}<li>{{ child }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</figure>

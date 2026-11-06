@@ -59,6 +59,7 @@
                 <td>{% if book.pages %}{{ book.pages }}{% else %}—{% endif %}</td>
                 <td><span class="badge text-bg-{{ book.status_badge_class }}">{{ book.get_status_display }}</span></td>
                 <td class="text-end text-nowrap">
+                  <a href="{% url 'jozveh:editor' book.pk %}" class="btn btn-outline-primary btn-sm">جزوه <span class="badge rounded-pill text-bg-{% if book.block_count %}primary{% else %}secondary{% endif %}">{{ book.block_count }}</span></a>
                   <a href="{% url 'bookfiles:list' book.pk %}" class="btn btn-outline-primary btn-sm">فایل‌ها <span class="badge rounded-pill text-bg-{% if book.file_count %}primary{% else %}secondary{% endif %}">{{ book.file_count }}</span></a>
                   <a href="{% url 'books:update' book.pk %}" class="btn btn-outline-primary btn-sm">ویرایش</a>
                   <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-book-{{ book.pk }}">حذف</button>

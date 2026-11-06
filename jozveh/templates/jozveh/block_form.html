@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ view.page_label }} «{{ kind_label }}» — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% with page_title=view.page_label|add:" «"|add:kind_label|add:"»" %}
+{% include "components/page-header.html" with title=page_title lead=jozveh_title breadcrumbs=breadcrumbs %}
+{% endwith %}
+
+<div class="row">
+  <div class="col-12 col-lg-8 col-xl-7">
+    <div class="card card-elevated">
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% for field in form %}
+            {% include "components/form-field.html" with field=field %}
+          {% endfor %}
+          <div class="d-grid d-sm-flex gap-2">
+            <button type="submit" class="btn btn-primary">ذخیره</button>
+            <a href="{{ cancel_url }}" class="btn btn-outline-primary">انصراف</a>
+            {% if back_url %}<a href="{{ back_url }}" class="btn btn-link">انتخاب نوع دیگر</a>{% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

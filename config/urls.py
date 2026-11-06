@@ -9,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("books.urls")),  # dashboard at "/"
     path("", include("bookfiles.urls")),  # PDF files of each book
+    path("", include("jozveh.urls")),  # each book's جزوه: editor and print view
     path("", include("core.urls")),  # shared pages: design system
 ]
 
