@@ -2,7 +2,7 @@ from itertools import groupby
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -26,7 +26,10 @@ class BookListView(ListView):
         return query, status
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        # Meta.ordering is ignored once a query groups (annotate + Count), so repeat it.
+        queryset = (
+            super().get_queryset().annotate(file_count=Count("files")).order_by(*Book._meta.ordering)
+        )
         query, status = self.get_filters()
         if query:
             queryset = queryset.filter(Q(title__icontains=query) | Q(author__icontains=query))

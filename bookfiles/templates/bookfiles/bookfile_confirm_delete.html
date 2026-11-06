@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}حذف فایل — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% include "components/page-header.html" with title="حذف فایل" lead=object.book.title breadcrumbs=breadcrumbs %}
+
+<div class="row">
+  <div class="col-12 col-lg-8 col-xl-6">
+    <div class="card card-elevated">
+      <div class="card-body">
+        <h2 class="h5 mb-2">«<bdi>{{ object.original_name }}</bdi>» حذف شود؟</h2>
+        <p class="text-body-secondary">این کار قابل بازگشت نیست.</p>
+        <form method="post" class="d-grid d-sm-flex gap-2">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">حذف</button>
+          <a href="{% url 'bookfiles:list' object.book_id %}" class="btn btn-outline-primary">انصراف</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

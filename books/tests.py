@@ -162,6 +162,34 @@ class BookCreateUpdateDeleteTests(TestCase):
         response = self.client.get("/")
         self.assertContains(response, f'id="delete-book-{book.pk}"')
         self.assertContains(response, reverse("books:delete", args=[book.pk]))
+        self.assertContains(response, "این کار قابل بازگشت نیست.")
+
+    def test_list_shows_file_count_and_files_link(self):
+        from bookfiles.models import BookFile
+
+        with_files = make_book(title="حقوق مدنی")
+        without_files = make_book(title="حقوق تجارت")
+        for i in range(2):
+            BookFile.objects.create(book=with_files, file=f"books/{with_files.pk}/{i}.pdf", original_name=f"{i}.pdf", size=1)
+        response = self.client.get("/")
+        self.assertContains(response, reverse("bookfiles:list", args=[with_files.pk]))
+        self.assertContains(response, reverse("bookfiles:list", args=[without_files.pk]))
+        self.assertContains(response, 'text-bg-primary">2</span>')
+        self.assertContains(response, 'text-bg-secondary">0</span>')
+        self.assertContains(response, "این کار قابل بازگشت نیست و 2 فایل PDF این کتاب هم پاک می‌شود.")
+
+    def test_delete_warning_with_and_without_files(self):
+        from bookfiles.models import BookFile
+
+        book = make_book()
+        self.assertEqual(book.delete_warning, "این کار قابل بازگشت نیست.")
+        for i in range(3):
+            BookFile.objects.create(book=book, file=f"books/{book.pk}/{i}.pdf", original_name=f"{i}.pdf", size=1)
+        self.assertEqual(book.delete_warning, "این کار قابل بازگشت نیست و 3 فایل PDF این کتاب هم پاک می‌شود.")
+        response = self.client.get(reverse("books:delete", args=[book.pk]))
+        self.assertContains(response, "3 فایل PDF این کتاب هم پاک می‌شود")
+        response = self.client.get(reverse("books:update", args=[book.pk]))
+        self.assertContains(response, "3 فایل PDF این کتاب هم پاک می‌شود")
 
     def test_unknown_pk_is_404(self):
         self.assertEqual(self.client.get(reverse("books:update", args=[999])).status_code, 404)

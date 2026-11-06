@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}فایل‌های کتاب «{{ book.title }}» — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% include "components/page-header.html" with title="فایل‌های کتاب" lead=book.title breadcrumbs=breadcrumbs %}
+
+<div class="row mb-4">
+  <div class="col-12 col-lg-8 col-xl-6">
+    <div class="card card-elevated">
+      <div class="card-body">
+        <h2 class="h5 mb-3">بارگذاری فایل PDF</h2>
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            {% include "components/alert.html" with kind="danger" message=form.non_field_errors.0 %}
+          {% endif %}
+          {% include "components/form-field.html" with field=form.files %}
+          <div class="d-grid d-sm-flex gap-2">
+            <button type="submit" class="btn btn-primary">بارگذاری</button>
+            <a href="{% url 'books:list' %}" class="btn btn-outline-primary">بازگشت به کتاب‌ها</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if not files %}
+  {% include "components/empty-state.html" with title="هنوز فایلی برای این کتاب بارگذاری نشده" text="فایل PDF را از بالای همین صفحه انتخاب و بارگذاری کنید." %}
+{% else %}
+  <section aria-labelledby="files-heading">
+    <h2 class="h5 mb-2" id="files-heading">{{ files|length }} فایل</h2>
+    <div class="card card-elevated">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col">نام فایل</th>
+              <th scope="col">حجم</th>
+              <th scope="col">زمان بارگذاری</th>
+              <th scope="col"><span class="visually-hidden">کارها</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in files %}
+            <tr>
+              <th scope="row" class="fw-semibold"><bdi>{{ f.original_name }}</bdi></th>
+              <td class="text-nowrap">{{ f.size_label }}</td>
+              <td class="text-nowrap"><time datetime="{{ f.uploaded_at|date:'c' }}">{{ f.uploaded_at|naturaltime }}</time></td>
+              <td class="text-end text-nowrap">
+                <a href="{{ f.file.url }}" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">باز کردن</a>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-file-{{ f.pk }}">حذف</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  {% for f in files %}
+    {% url 'bookfiles:delete' book.pk f.pk as delete_url %}{% with pk_str=f.pk|stringformat:"s" %}
+    {% include "components/confirm-modal.html" with modal_id="delete-file-"|add:pk_str item_name=f.original_name action_url=delete_url %}
+    {% endwith %}
+  {% endfor %}
+{% endif %}
+{% endblock %}

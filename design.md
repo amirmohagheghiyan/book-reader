@@ -107,7 +107,7 @@ Bootstrap markup; shared pieces in `templates/components/`:
 | `form-field.html` | `field`, `help`, `show_valid` | label, «(الزامی)» marker, help, error under the field; needs `{% load form_extras %}` |
 | `empty-state.html` | `title`, `text`, `action_url`, `action_label` | empty lists with one next action |
 | `pagination.html` | `page_obj`, `anchor` | long lists; hides itself for one page |
-| `confirm-modal.html` | `modal_id`, `item_name`, `action_url`, `demo` | delete confirmation, POST with CSRF |
+| `confirm-modal.html` | `modal_id`, `item_name`, `action_url`, `text` (optional body, default «این کار قابل بازگشت نیست.»), `demo` | delete confirmation, POST with CSRF |
 | `page-header.html` | `title`, `lead`, `breadcrumbs`, `action_url`, `action_label` | top of every page |
 
 - **Buttons:** one primary per view; destructive = `btn-danger` + confirm.

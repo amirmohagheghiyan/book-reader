@@ -69,3 +69,13 @@ class Book(models.Model):
     def status_badge_class(self):
         """Bootstrap contextual class for the status badge."""
         return STATUS_BADGE_CLASSES.get(self.status, "secondary")
+
+    @property
+    def delete_warning(self):
+        """Body of the delete confirmation; names the PDF files that go with the book."""
+        count = getattr(self, "file_count", None)
+        if count is None:
+            count = self.files.count()
+        if not count:
+            return "این کار قابل بازگشت نیست."
+        return f"این کار قابل بازگشت نیست و {count} فایل PDF این کتاب هم پاک می‌شود."

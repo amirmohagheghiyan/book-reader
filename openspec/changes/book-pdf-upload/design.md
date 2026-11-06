@@ -172,9 +172,10 @@ not a `ModelForm` anyway.
   بارگذاری نشده», text «فایل PDF را از بالای همین صفحه انتخاب و بارگذاری
   کنید.», no action) or an `h2` «{{ files|length }} فایل» and a
   `.table-responsive` table (نام فایل، حجم، زمان بارگذاری، کارها) with
-  `{{ f.size|filesizeformat }}`, `{{ f.uploaded_at|naturaltime }}` inside a
-  `<time datetime>` (requires `django.contrib.humanize` in
-  `INSTALLED_APPS`; both filters are translated by Django's `fa` locale),
+  `{{ f.size_label }}` (a model property producing «۲٫۴ مگابایت»; Django's
+  `filesizeformat` renders «2.2 MB» in the `fa` locale, checked in the
+  browser), `{{ f.uploaded_at|naturaltime }}` inside a `<time datetime>`
+  (requires `django.contrib.humanize` in `INSTALLED_APPS`; translated),
   «باز کردن» (`btn-outline-primary btn-sm`, new tab) and «حذف»
   (`btn-outline-danger btn-sm`, opens `confirm-modal` with
   `modal_id="delete-file-<pk>"`, `item_name=f.original_name`,

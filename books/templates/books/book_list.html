@@ -59,6 +59,7 @@
                 <td>{% if book.pages %}{{ book.pages }}{% else %}—{% endif %}</td>
                 <td><span class="badge text-bg-{{ book.status_badge_class }}">{{ book.get_status_display }}</span></td>
                 <td class="text-end text-nowrap">
+                  <a href="{% url 'bookfiles:list' book.pk %}" class="btn btn-outline-primary btn-sm">فایل‌ها <span class="badge rounded-pill text-bg-{% if book.file_count %}primary{% else %}secondary{% endif %}">{{ book.file_count }}</span></a>
                   <a href="{% url 'books:update' book.pk %}" class="btn btn-outline-primary btn-sm">ویرایش</a>
                   <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-book-{{ book.pk }}">حذف</button>
                 </td>
@@ -73,7 +74,7 @@
 
   {% for group in groups %}{% for book in group.books %}
     {% url 'books:delete' book.pk as delete_url %}{% with pk_str=book.pk|stringformat:"s" %}
-    {% include "components/confirm-modal.html" with modal_id="delete-book-"|add:pk_str item_name=book.title action_url=delete_url %}
+    {% include "components/confirm-modal.html" with modal_id="delete-book-"|add:pk_str item_name=book.title action_url=delete_url text=book.delete_warning %}
     {% endwith %}
   {% endfor %}{% endfor %}
 {% endif %}

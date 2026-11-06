@@ -44,6 +44,6 @@
 
 {% if object %}
   {% url 'books:delete' object.pk as delete_url %}
-  {% include "components/confirm-modal.html" with modal_id="delete-book" item_name=object.title action_url=delete_url %}
+  {% include "components/confirm-modal.html" with modal_id="delete-book" item_name=object.title action_url=delete_url text=object.delete_warning %}
 {% endif %}
 {% endblock %}

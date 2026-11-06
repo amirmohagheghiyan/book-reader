@@ -121,7 +121,7 @@ config/                 # Django project: settings.py, urls.py, wsgi.py, asgi.py
 templates/
   base.html             # shared layout (RTL, Bootstrap, navbar, footer)
   components/           # reusable partials: alert, card, form-field, ...
-media/                  # uploaded PDF files (git-ignored; created by the upload change)
+media/                  # uploaded PDF files, media/books/<book_id>/ (git-ignored; created on first upload)
 .env                    # AI_BASE_URL, AI_MODEL, AI_API_KEY (git-ignored; never committed)
 static/
   css/theme.css         # @font-face, tokens and Bootstrap overrides from design.md
@@ -138,6 +138,9 @@ core/                   # shared pages only: design system (no longer serves "/"
 books/                  # کتابخانه‌ی ماهانه: Book model, dashboard at "/", add/edit/delete
   jalali.py             # pure-Python today_jalali() for form defaults (no package)
   templates/books/      # book_list, book_form, book_confirm_delete
+bookfiles/              # فایل‌های PDF هر کتاب: BookFile model, upload/list/delete at /books/<pk>/files/
+  validators.py         # validate_pdf: .pdf name and %PDF- header, no package
+  templates/bookfiles/  # bookfile_list, bookfile_confirm_delete
 <feature>/              # one Django app per product feature
 openspec/               # config.yaml, specs/, changes/
 ```
@@ -174,7 +177,8 @@ openspec/               # config.yaml, specs/, changes/
 - `TEMPLATES["DIRS"]` includes `templates/`; `STATICFILES_DIRS` includes
   `static/`.
 - Uploaded PDFs: `MEDIA_ROOT = BASE_DIR / "media"`, `MEDIA_URL = "/media/"`,
-  served by Django only while `DEBUG = True` (added by the upload change).
+  served by Django only while `DEBUG = True`. `django.contrib.humanize` is
+  enabled for relative upload times.
 - Jalali dates only if the user asks; a Jalali library needs approval.
 
 ## Tooling and Git
