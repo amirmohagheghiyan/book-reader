@@ -12,7 +12,7 @@
 
 - [x] 2.1 Write `jozveh/forms.py` with the base class (`to_data()`, `initial_from(data)`), the heading, text, and note forms, and `FORMS_BY_KIND`; verify form tests pass for valid input, empty or whitespace-only input (required error), a heading over 200 characters, and the data ⇄ text round-trip.
 - [x] 2.2 Add `StepsForm`; verify tests pass for three steps, blank lines dropped with numbering intact, an empty field («دست‌کم یک گام بنویسید.»), and the round-trip.
-- [x] 2.3 Add `TableForm`; verify tests pass for a valid table, cell trimming, a short row padded with `""`, a long row erroring with «ردیف 3 بیشتر از سرستون‌ها خانه دارد.», header only («دست‌کم یک ردیف زیر سرستون‌ها بنویسید.»), and the round-trip.
+- [x] 2.3 Add `TableForm`; verify tests pass for a valid table, cell trimming, a short row padded with `""`, a long row erroring with «خط 3 بیشتر از سرستون‌ها خانه دارد.» (line number as typed, blank lines counted), header only («دست‌کم یک ردیف زیر سرستون‌ها بنویسید.»), and the round-trip.
 - [x] 2.4 Add `ConceptMapForm`; verify tests pass for two branches with children split on `،` and `,`, a branch without `:`, a child containing `:` after the first split, an empty center, no branches, and the round-trip.
 
 ## 3. Editor, add, edit, move, and delete views

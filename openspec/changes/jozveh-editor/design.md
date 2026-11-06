@@ -113,9 +113,11 @@ method `initial_from(data)`, plus one plain `forms.Form` per kind. A
   - Non-blank lines are split on `|` and cells are stripped.
   - The first line is the header. No data rows raises «دست‌کم یک ردیف زیر
     سرستون‌ها بنویسید.».
-  - A row longer than the header raises «ردیف {n} بیشتر از سرستون‌ها خانه
-    دارد.», where n counts non-blank lines including the header, so it
-    matches what the user sees.
+  - A row longer than the header raises «خط {n} بیشتر از سرستون‌ها خانه
+    دارد.», where n is the line number in the textarea as typed (header and
+    blank lines included), so it matches what the user sees. It says «خط»
+    (line), not «ردیف» (row), because a user counting table rows would not
+    count the header.
   - Shorter rows are padded with `""`.
 - **concept_map:** `center` is a `CharField(max_length=200)` and `branches`
   is a textarea.

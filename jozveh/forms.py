@@ -90,15 +90,20 @@ class TableForm(BlockForm):
     )
 
     def clean_rows(self):
-        lines = non_blank_lines(self.cleaned_data["rows"])
-        cells = [[cell.strip() for cell in line.split("|")] for line in lines]
-        if len(cells) < 2:
+        # Keep each line's number as typed (blank lines count) so errors match the text box.
+        numbered = [
+            (number, [cell.strip() for cell in line.split("|")])
+            for number, line in enumerate(self.cleaned_data["rows"].splitlines(), start=1)
+            if line.strip()
+        ]
+        if len(numbered) < 2:
             raise forms.ValidationError("دست‌کم یک ردیف زیر سرستون‌ها بنویسید.")
-        header, rows = cells[0], cells[1:]
-        for number, row in enumerate(rows, start=2):
+        header = numbered[0][1]
+        for number, row in numbered[1:]:
             if len(row) > len(header):
-                raise forms.ValidationError(f"ردیف {number} بیشتر از سرستون‌ها خانه دارد.")
-        return {"header": header, "rows": [row + [""] * (len(header) - len(row)) for row in rows]}
+                raise forms.ValidationError(f"خط {number} بیشتر از سرستون‌ها خانه دارد.")
+        rows = [row + [""] * (len(header) - len(row)) for _, row in numbered[1:]]
+        return {"header": header, "rows": rows}
 
     def to_data(self):
         return self.cleaned_data["rows"]

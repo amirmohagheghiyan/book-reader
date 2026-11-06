@@ -74,9 +74,14 @@ class TableFormTests(SimpleTestCase):
         self.assertEqual(data["rows"], [["۱", "۲", ""]])
 
     def test_long_row_names_the_line(self):
-        form = TableForm(data={"rows": "الف | ب\n۱ | ۲\n\n۳ | ۴ | ۵"})
+        form = TableForm(data={"rows": "الف | ب\n۱ | ۲\n۳ | ۴ | ۵"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors["rows"], ["ردیف 3 بیشتر از سرستون‌ها خانه دارد."])
+        self.assertEqual(form.errors["rows"], ["خط 3 بیشتر از سرستون‌ها خانه دارد."])
+
+    def test_line_number_counts_blank_lines_as_typed(self):
+        form = TableForm(data={"rows": "الف | ب\r\n۱ | ۲\r\n\r\n۳ | ۴ | ۵"})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors["rows"], ["خط 4 بیشتر از سرستون‌ها خانه دارد."])
 
     def test_header_only(self):
         form = TableForm(data={"rows": "الف | ب\n"})
