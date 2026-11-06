@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}کتاب‌های من — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% url 'books:create' as create_url %}
+{% include "components/page-header.html" with title="کتاب‌های من" lead="کتاب‌های تخصصی هر ماه، یک‌جا و با وضعیت خواندن." action_url=create_url action_label="افزودن کتاب" %}
+
+{% if not has_any_books %}
+  {% include "components/empty-state.html" with title="هنوز کتابی ثبت نشده" text="اولین کتاب این ماه را اضافه کنید تا داشبورد شکل بگیرد." action_url=create_url action_label="افزودن کتاب" %}
+{% else %}
+  <form method="get" role="search" class="card card-elevated mb-4" aria-label="جستجو و فیلتر کتاب‌ها">
+    <div class="card-body row g-2 align-items-end">
+      <div class="col-12 col-md-6">
+        <label for="search-q" class="form-label">جستجو</label>
+        <input type="search" class="form-control" id="search-q" name="q" value="{{ q }}" placeholder="نام کتاب یا نویسنده">
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <label for="search-status" class="form-label">وضعیت</label>
+        <select class="form-select" id="search-status" name="status">
+          <option value=""{% if not status %} selected{% endif %}>همه</option>
+          {% for value, label in status_choices %}
+            <option value="{{ value }}"{% if status == value %} selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-12 col-sm-6 col-md-3 d-grid d-sm-flex gap-2">
+        <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        {% if is_filtered %}<a href="{% url 'books:list' %}" class="btn btn-link text-nowrap">پاک کردن جستجو</a>{% endif %}
+      </div>
+    </div>
+  </form>
+
+  {% if not groups %}
+    {% url 'books:list' as list_url %}
+    {% include "components/empty-state.html" with title="کتابی با این مشخصات پیدا نشد" text="عبارت جستجو یا فیلتر وضعیت را تغییر دهید." action_url=list_url action_label="پاک کردن جستجو" %}
+  {% endif %}
+
+  {% for group in groups %}
+    <section class="mb-4" aria-labelledby="period-{{ forloop.counter }}">
+      <h2 class="h5 mb-2" id="period-{{ forloop.counter }}">{{ group.label }}</h2>
+      <div class="card card-elevated">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">نام کتاب</th>
+                <th scope="col">نویسنده</th>
+                <th scope="col">صفحه</th>
+                <th scope="col">وضعیت</th>
+                <th scope="col"><span class="visually-hidden">کارها</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in group.books %}
+              <tr>
+                <th scope="row" class="fw-semibold">{{ book.title }}</th>
+                <td>{{ book.author|default:"—" }}</td>
+                <td>{% if book.pages %}{{ book.pages }}{% else %}—{% endif %}</td>
+                <td><span class="badge text-bg-{{ book.status_badge_class }}">{{ book.get_status_display }}</span></td>
+                <td class="text-end text-nowrap">
+                  <a href="{% url 'books:update' book.pk %}" class="btn btn-outline-primary btn-sm">ویرایش</a>
+                  <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-book-{{ book.pk }}">حذف</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  {% endfor %}
+
+  {% for group in groups %}{% for book in group.books %}
+    {% url 'books:delete' book.pk as delete_url %}{% with pk_str=book.pk|stringformat:"s" %}
+    {% include "components/confirm-modal.html" with modal_id="delete-book-"|add:pk_str item_name=book.title action_url=delete_url %}
+    {% endwith %}
+  {% endfor %}{% endfor %}
+{% endif %}
+{% endblock %}

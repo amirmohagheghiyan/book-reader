@@ -130,18 +130,21 @@ static/
   js/vendor/            # bootstrap.bundle.min.js (local copy)
   fonts/                # YekanBakhFaNum-*.woff2 (placed by the user)
   brand/                # aleflogo.png (placed by the user)
-core/                   # home page, design-system page and shared pages
+core/                   # shared pages only: design system (no longer serves "/")
   forms.py              # sample form used only by the design-system page
   templatetags/form_extras.py   # `add_class` filter for form-field.html
-  templates/core/home.html
   templates/core/design-system.html
   templates/core/design-system/  # one partial per UI-kit section
+books/                  # کتابخانه‌ی ماهانه: Book model, dashboard at "/", add/edit/delete
+  jalali.py             # pure-Python today_jalali() for form defaults (no package)
+  templates/books/      # book_list, book_form, book_confirm_delete
 <feature>/              # one Django app per product feature
 openspec/               # config.yaml, specs/, changes/
 ```
 
 - One app per feature: `uv run python manage.py startapp <feature>`, then add
-  it to `INSTALLED_APPS`. Keep `config/urls.py` thin (include each app).
+  it to `INSTALLED_APPS`. Keep `config/urls.py` thin (include each app);
+  `books.urls` owns `/`, so include it before `core.urls`.
 - Markup used by two or more pages goes in `templates/components/`.
 
 ## Code Rules

@@ -1,24 +1,20 @@
 import re
 
 from django.test import TestCase
-from django.urls import reverse
+from django.urls import resolve, reverse
 
 HEX_COLOR = re.compile(r"#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b")
 
 
-class HomePageTests(TestCase):
-    def test_home_renders_with_product_name(self):
-        response = self.client.get(reverse("core:home"))
+class RootUrlTests(TestCase):
+    def test_root_is_served_by_books_dashboard(self):
+        self.assertEqual(resolve("/").view_name, "books:list")
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "core/home.html")
         self.assertContains(response, "جزوه‌ساز")
         self.assertContains(response, 'dir="rtl"')
         self.assertContains(response, "css/vendor/bootstrap.rtl.min.css")
         self.assertNotContains(response, "cdn.")
-
-    def test_home_links_to_design_system(self):
-        response = self.client.get(reverse("core:home"))
-        self.assertContains(response, reverse("core:design_system"))
 
 
 class DesignSystemPageTests(TestCase):

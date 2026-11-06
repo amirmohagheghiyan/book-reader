@@ -83,7 +83,7 @@ standard Gregorian→Jalali day-count algorithm, evaluated with
 `django.utils.timezone.localdate()` (`Asia/Tehran`). Used only as the
 `initial` value of `year` and `month` on the create form, and covered by a
 unit test with two known dates (e.g. 2026-03-21 → 1405/1, 2026-11-06 →
-1404/8). Alternative: leave the fields empty. Rejected: the owner enters
+1405/8). Alternative: leave the fields empty. Rejected: the owner enters
 the current month almost every time; a wrong default is still editable.
 Approved-package alternative (`jdatetime`) is out of scope per
 `AGENTS.md`.

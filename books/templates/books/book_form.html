@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}ویرایش کتاب{% else %}افزودن کتاب{% endif %} — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% url 'books:list' as list_url %}
+{% if object %}
+  {% include "components/page-header.html" with title="ویرایش کتاب" lead=object.title breadcrumbs=breadcrumbs %}
+{% else %}
+  {% include "components/page-header.html" with title="افزودن کتاب" lead="کتابی را که این ماه می‌خوانید ثبت کنید." breadcrumbs=breadcrumbs %}
+{% endif %}
+
+<div class="row">
+  <div class="col-12 col-lg-8 col-xl-6">
+    <div class="card card-elevated">
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            {% include "components/alert.html" with kind="danger" message=form.non_field_errors.0 %}
+          {% endif %}
+          {% include "components/form-field.html" with field=form.title %}
+          {% include "components/form-field.html" with field=form.author %}
+          <div class="row">
+            <div class="col-12 col-sm-6">{% include "components/form-field.html" with field=form.month %}</div>
+            <div class="col-12 col-sm-6">{% include "components/form-field.html" with field=form.year %}</div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-6">{% include "components/form-field.html" with field=form.status %}</div>
+            <div class="col-12 col-sm-6">{% include "components/form-field.html" with field=form.pages %}</div>
+          </div>
+          <div class="d-grid d-sm-flex gap-2 mt-2">
+            <button type="submit" class="btn btn-primary">ذخیره</button>
+            <a href="{{ list_url }}" class="btn btn-outline-primary">انصراف</a>
+            {% if object %}
+              <button type="button" class="btn btn-outline-danger ms-sm-auto" data-bs-toggle="modal" data-bs-target="#delete-book">حذف</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if object %}
+  {% url 'books:delete' object.pk as delete_url %}
+  {% include "components/confirm-modal.html" with modal_id="delete-book" item_name=object.title action_url=delete_url %}
+{% endif %}
+{% endblock %}

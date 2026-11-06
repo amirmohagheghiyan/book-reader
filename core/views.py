@@ -5,12 +5,6 @@ from django.views.generic import TemplateView
 from .forms import DesignSystemSampleForm
 
 
-class HomeView(TemplateView):
-    """Welcome page: product name only, no product capability yet."""
-
-    template_name = "core/home.html"
-
-
 class DesignSystemView(TemplateView):
     """UI kit page: shows every token and shared component in every state."""
 
@@ -32,7 +26,7 @@ class DesignSystemView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["sections"] = self.sections
         context["breadcrumbs"] = [
-            {"label": "خانه", "url": reverse_lazy("core:home")},
+            {"label": "خانه", "url": reverse_lazy("books:list")},
             {"label": "سیستم طراحی"},
         ]
         context["form"] = DesignSystemSampleForm()

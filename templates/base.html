@@ -14,7 +14,7 @@
   <header>
     <nav class="navbar navbar-expand-md bg-body-tertiary" aria-label="ناوبری اصلی">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="{% url 'core:home' %}">
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="{% url 'books:list' %}">
           <img class="brand-logo" src="{% static 'brand/aleflogo.png' %}" alt="لوگوی جزوه‌ساز" width="32" height="32">
           <span>جزوه‌ساز</span>
         </a>
@@ -25,9 +25,9 @@
         <div class="collapse navbar-collapse" id="main-nav">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link{% if request.resolver_match.url_name == 'home' %} active{% endif %}"
-                 {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}
-                 href="{% url 'core:home' %}">خانه</a>
+              <a class="nav-link{% if request.resolver_match.namespace == 'books' %} active{% endif %}"
+                 {% if request.resolver_match.namespace == 'books' %}aria-current="page"{% endif %}
+                 href="{% url 'books:list' %}">خانه</a>
             </li>
             <li class="nav-item">
               <a class="nav-link{% if request.resolver_match.url_name == 'design_system' %} active{% endif %}"
