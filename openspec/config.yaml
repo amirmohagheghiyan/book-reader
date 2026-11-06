@@ -14,13 +14,16 @@ context: |
   tasks.md in English.
 
   Project: جزوه‌ساز — a place where a student keeps and tracks the specialized
-  books they must read each month; its vision is a summarized, visual
-  «جزوه» for each thick book. A Persian, right-to-left web product.
+  books they must read each month, uploads each book's PDF, and builds a
+  «جزوه» of ordered blocks with structural diagrams (concept map, steps,
+  table) that exports to Word and PDF. A Persian, right-to-left web product.
   Stack: Django with server-rendered templates and Bootstrap (local static
   files), SQLite, Python managed with uv. Runs locally only.
-  Boundary: no login or sign-up, no deployment, no email, no external
-  service, no REST API, no JavaScript framework, no extra Python package
-  without the user's approval.
+  Boundary: no login or sign-up, no deployment, no email, no REST API, no
+  JavaScript framework. Uploads: PDF only, stored on this machine. Network:
+  only the AI-service call configured in .env (AI_BASE_URL, AI_MODEL,
+  AI_API_KEY; Google AI Studio now, local Ollama later). Python packages:
+  only with the user's approval, one package per change.
 
   Read before writing any artifact:
   - AGENTS.md: implementation rules, boundary, how to talk with the user.
@@ -45,7 +48,7 @@ rules:
   design:
     - English. Record the Django app, models and fields, migrations, URLs, views, forms, templates, and admin registration.
     - Reuse templates/components and the tokens in root design.md. Thin views; rules in models or forms.
-    - Never plan to edit an applied migration. No login, API, external request, or new package without approval.
+    - Never plan to edit an applied migration. No login or REST API. The only network request is the AI-service call read from .env; a new Python package needs the user's approval and its own change.
   tasks:
     - English. Small checkbox tasks grouped by area, each naming the files it touches.
     - End with verification: manage.py check, makemigrations --check --dry-run, test, and each scenario in the browser at phone and desktop width in RTL.

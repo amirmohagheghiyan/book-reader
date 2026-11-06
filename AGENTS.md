@@ -5,8 +5,9 @@
 A Persian, right-to-left web product built with Django and Bootstrap in one
 codebase: Django renders pages on the server, Bootstrap styles them. It is
 built in a workshop by a non-technical product owner who does not write code.
-The project runs locally only. Do not invent features or behavior that the
-user or an approved spec did not describe.
+The project runs locally only; its single allowed outbound call is the AI
+service described in Current Boundary. Do not invent features or behavior
+that the user or an approved spec did not describe.
 
 ## Current Boundary
 
@@ -16,15 +17,36 @@ unless the user explicitly asks:
 - Deployment, hosting, domains, HTTPS, production settings, Docker, CI.
 - Sign-up, login, password reset, roles, per-user data. The only account is a
   local superuser the user creates for the Django admin.
-- Email, payments, file uploads, external APIs, or any network request made by
-  the running product.
+- Email, payments, and any network request made by the running product other
+  than the single AI-service call allowed below (no CDN, analytics, fonts, or
+  other external APIs).
+- File uploads other than the PDF upload allowed below (no images, Word,
+  EPUB, or cloud storage).
 - A separate frontend app, a REST API, JavaScript frameworks, or a Node.js
   build step. Bootstrap is used as ready-made local static files.
-- Python packages other than Django unless the user approves; check
+- Python packages other than Django. Each new package needs the user's
+  explicit approval and is added in its own OpenSpec change, one package per
+  change, with the reason recorded in that change's `design.md`; check
   `pyproject.toml` first.
 
+### Allowed by the owner's decision (2026-11-06)
+
+- **PDF upload on this machine.** The user uploads a book as a PDF file from
+  the same computer the product runs on. Files are stored locally under
+  `media/` (git-ignored) and never sent anywhere except to the AI service
+  below as part of building a جزوه. Only `.pdf` is accepted.
+- **One AI service.** The running product may make exactly one kind of
+  network request: calling an AI model to build a جزوه from a book. The
+  service address, model name, and key are read from a git-ignored `.env`
+  (`AI_BASE_URL`, `AI_MODEL`, `AI_API_KEY`); nothing provider-specific is
+  hard-coded. Today the target is Google AI Studio; later it will be a local
+  Ollama, and that switch must need only `.env` edits. How `.env` is loaded
+  and how the request is sent (a package or the standard library) is decided
+  in the OpenSpec change that adds the call, under the package rule above.
+
 Never describe this project as production-ready or secure: it has no login, so
-anyone who can open the local address can change the data.
+anyone who can open the local address can change the data, upload files, and
+trigger AI calls that may cost money on the owner's key.
 
 A spec, plan, or task cannot override this boundary. If one needs something
 out of scope, stop and report the conflict.
@@ -98,6 +120,8 @@ config/                 # Django project: settings.py, urls.py, wsgi.py, asgi.py
 templates/
   base.html             # shared layout (RTL, Bootstrap, navbar, footer)
   components/           # reusable partials: alert, card, form-field, ...
+media/                  # uploaded PDF files (git-ignored; created by the upload change)
+.env                    # AI_BASE_URL, AI_MODEL, AI_API_KEY (git-ignored; never committed)
 static/
   css/theme.css         # @font-face, tokens and Bootstrap overrides from design.md
   css/vendor/           # bootstrap.rtl.min.css (local copy)
@@ -131,7 +155,12 @@ openspec/               # config.yaml, specs/, changes/
 - Register each model in `admin.py` with a Persian `verbose_name`.
 - Model changes: `makemigrations` then `migrate`. Never edit an applied
   migration; add a new one. `db.sqlite3` is not committed.
-- No secrets in code or chat; if ever needed, a git-ignored `.env`.
+- No secrets in code or chat. The AI key and settings live only in the
+  git-ignored `.env`; code reads them from the environment and never logs or
+  renders them. The user edits `.env` themselves; never ask for its values.
+- Every call to the AI service goes through one small module in the app that
+  owns the جزوه; views and templates never call the service directly. Tests
+  replace that module with a fake and never reach the network.
 
 ## Django Settings
 
@@ -140,6 +169,8 @@ openspec/               # config.yaml, specs/, changes/
 - SQLite. `DEBUG = True` is acceptable (local only).
 - `TEMPLATES["DIRS"]` includes `templates/`; `STATICFILES_DIRS` includes
   `static/`.
+- Uploaded PDFs: `MEDIA_ROOT = BASE_DIR / "media"`, `MEDIA_URL = "/media/"`,
+  served by Django only while `DEBUG = True` (added by the upload change).
 - Jalali dates only if the user asks; a Jalali library needs approval.
 
 ## Tooling and Git
@@ -149,7 +180,8 @@ openspec/               # config.yaml, specs/, changes/
   not leave a server running; tell the user what to open or refresh.
 - The user creates the superuser (`createsuperuser`) themselves.
 - Bootstrap and font files may be downloaded once during setup into
-  `static/`; the running product never loads anything from the internet.
+  `static/`; the running product loads nothing from the internet except the
+  AI-service call allowed in Current Boundary.
 - Commit after each verified step (the message the prompt gives, or a short
   conventional one). No remote; never push.
 - If Git has no identity, set a repository-local one only
@@ -179,6 +211,9 @@ Verify in proportion to the change and report real results in plain Persian:
   `uv run python manage.py test`.
 - Settings or dependencies: also render the home page with Django's test
   client.
+- PDF upload: try a valid PDF, a non-PDF file, and an empty form.
+- AI call: automated tests use the fake module; one real call only when the
+  user runs it from their own terminal with their own `.env`.
 - OpenSpec files: `openspec validate --strict <change>`.
 - Say plainly what you did not check.
 
