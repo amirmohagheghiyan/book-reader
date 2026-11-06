@@ -191,7 +191,10 @@ openspec/               # config.yaml, specs/, changes/
   `static/`; the running product loads nothing from the internet except the
   AI-service call allowed in Current Boundary.
 - Commit after each verified step (the message the prompt gives, or a short
-  conventional one). No remote; never push.
+  conventional one). The only remote is `origin`
+  (github.com/amirmohagheghiyan/book-reader, branch `main`); push only when
+  the user asks, never force-push. `.env`, `db.sqlite3`, and `media/` stay
+  git-ignored and never reach the remote.
 - If Git has no identity, set a repository-local one only
   (`Workshop Participant` / `participant@workshop.local`).
 - Never discard, reset, or rewrite commits without the user's explicit choice.
