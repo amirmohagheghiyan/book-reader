@@ -53,7 +53,7 @@ rules:
     - Never plan to edit an applied migration. No login or REST API. The only network request is the AI-service call read from .env; a new Python package needs the user's approval and its own change.
   tasks:
     - English. Small checkbox tasks grouped by area, each naming the files it touches.
-    - End with verification: manage.py check, makemigrations --check --dry-run, test, and each scenario in the browser at phone and desktop width in RTL.
+    - "End with verification: manage.py check, makemigrations --check --dry-run, test, and each scenario in the browser at phone and desktop width in RTL."
     - Add a documentation task only when facts in AGENTS.md, design.md, or product.md change.
 
 operations:
