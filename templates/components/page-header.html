@@ -1,0 +1,23 @@
+{# Page header. Params: title, lead (optional), breadcrumbs (list of {label, url}), action_url, action_label (optional) #}
+<header class="mb-4">
+  {% if breadcrumbs %}
+  <nav aria-label="مسیر صفحه">
+    <ol class="breadcrumb mb-2">
+      {% for crumb in breadcrumbs %}
+        {% if crumb.url %}
+          <li class="breadcrumb-item"><a href="{{ crumb.url }}">{{ crumb.label }}</a></li>
+        {% else %}
+          <li class="breadcrumb-item active" aria-current="page">{{ crumb.label }}</li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+  {% endif %}
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+    <div>
+      <h1 class="mb-1">{{ title }}</h1>
+      {% if lead %}<p class="lead text-body-secondary mb-0">{{ lead }}</p>{% endif %}
+    </div>
+    {% if action_url %}<a href="{{ action_url }}" class="btn btn-primary">{{ action_label|default:'افزودن' }}</a>{% endif %}
+  </div>
+</header>

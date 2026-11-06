@@ -99,14 +99,18 @@ templates/
   base.html             # shared layout (RTL, Bootstrap, navbar, footer)
   components/           # reusable partials: alert, card, form-field, ...
 static/
-  css/theme.css         # tokens and Bootstrap overrides from design.md
+  css/theme.css         # @font-face, tokens and Bootstrap overrides from design.md
   css/vendor/           # bootstrap.rtl.min.css (local copy)
+  js/app.js             # tiny helpers: tooltips, toasts, swatch color codes
   js/vendor/            # bootstrap.bundle.min.js (local copy)
-  fonts/                # font files the user placed here
-  brand/                # optional logo
+  fonts/                # YekanBakhFaNum-*.woff2 (placed by the user)
+  brand/                # aleflogo.png (placed by the user)
 core/                   # home page, design-system page and shared pages
+  forms.py              # sample form used only by the design-system page
+  templatetags/form_extras.py   # `add_class` filter for form-field.html
   templates/core/home.html
   templates/core/design-system.html
+  templates/core/design-system/  # one partial per UI-kit section
 <feature>/              # one Django app per product feature
 openspec/               # config.yaml, specs/, changes/
 ```

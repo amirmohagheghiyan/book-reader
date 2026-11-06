@@ -1,0 +1,85 @@
+<section id="sec-forms" class="ds-section">
+  <h2 class="mb-1">فرم‌ها</h2>
+  <p class="text-body-secondary">هر فیلد برچسب دیدنی دارد، فیلد الزامی با کلمه مشخص می‌شود و خطا زیر همان فیلد می‌آید و می‌گوید چه کنید.</p>
+  <div class="row g-3">
+    <div class="col-12 col-lg-6">
+      <div class="card card-elevated h-100"><div class="card-body">
+        <h3 class="h6 text-body-secondary mb-3">فرم کامل (قطعه‌ی form-field)</h3>
+        <form action="#sec-forms" method="get" novalidate>
+          {% include "components/form-field.html" with field=form.title %}
+          {% include "components/form-field.html" with field=form.email help="برای ارسال یادآوری استفاده نمی‌شود؛ فقط نمونه است." %}
+          {% include "components/form-field.html" with field=form.pages %}
+          {% include "components/form-field.html" with field=form.status %}
+          {% include "components/form-field.html" with field=form.note %}
+          {% include "components/form-field.html" with field=form.remind %}
+          <div class="d-grid d-sm-flex gap-2">
+            <button type="submit" class="btn btn-primary">ذخیره</button>
+            <button type="reset" class="btn btn-outline-primary">پاک کردن</button>
+          </div>
+        </form>
+      </div></div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="card card-elevated h-100"><div class="card-body">
+        <h3 class="h6 text-body-secondary mb-3">حالت خطا</h3>
+        {% include "components/form-field.html" with field=invalid_form.title %}
+        {% include "components/form-field.html" with field=invalid_form.email %}
+        {% include "components/form-field.html" with field=invalid_form.pages %}
+        {% include "components/form-field.html" with field=invalid_form.status %}
+        <h3 class="h6 text-body-secondary mt-4 mb-3">حالت درست، غیرفعال و فقط‌خواندنی</h3>
+        <div class="mb-3">
+          <label class="form-label" for="ds-valid">نام نویسنده</label>
+          <input type="text" class="form-control is-valid" id="ds-valid" value="ناصر کاتوزیان">
+          <div class="valid-feedback">درست است.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="ds-disabled">فیلد غیرفعال</label>
+          <input type="text" class="form-control" id="ds-disabled" value="قابل تغییر نیست" disabled>
+        </div>
+        <div class="mb-0">
+          <label class="form-label" for="ds-readonly">فیلد فقط‌خواندنی</label>
+          <input type="text" class="form-control" id="ds-readonly" value="۱۲ آبان ۱۴۰۴" readonly>
+        </div>
+      </div></div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="card card-elevated h-100"><div class="card-body">
+        <h3 class="h6 text-body-secondary mb-3">انتخاب‌ها</h3>
+        <div class="form-check"><input class="form-check-input" type="checkbox" id="ds-check-1" checked><label class="form-check-label" for="ds-check-1">کتاب مرجع است</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="ds-check-2"><label class="form-check-label" for="ds-check-2">نسخه‌ی چاپی دارم</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" name="ds-radio" id="ds-radio-1" checked><label class="form-check-label" for="ds-radio-1">در صف</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" name="ds-radio" id="ds-radio-2"><label class="form-check-label" for="ds-radio-2">در حال خواندن</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="radio" name="ds-radio" id="ds-radio-3"><label class="form-check-label" for="ds-radio-3">تمام‌شده</label></div>
+        <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" role="switch" id="ds-switch" checked><label class="form-check-label" for="ds-switch">یادآوری ماهانه</label></div>
+        <label for="ds-range" class="form-label">پیشرفت خواندن: ۶۰٪</label>
+        <input type="range" class="form-range" min="0" max="100" value="60" id="ds-range">
+      </div></div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="card card-elevated h-100"><div class="card-body">
+        <h3 class="h6 text-body-secondary mb-3">فیلدهای ویژه</h3>
+        <div class="mb-3">
+          <label class="form-label" for="ds-date">تاریخ شروع</label>
+          <input type="date" class="form-control" id="ds-date" dir="ltr">
+        </div>
+        <label class="form-label" for="ds-pages-group">تعداد صفحه</label>
+        <div class="input-group mb-3">
+          <input type="number" class="form-control" id="ds-pages-group" dir="ltr" placeholder="420">
+          <span class="input-group-text">صفحه</span>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="ds-floating" placeholder="نام کتاب">
+          <label for="ds-floating">نام کتاب (برچسب شناور)</label>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">مرتب‌سازی</button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item active" href="#sec-forms" aria-current="true">جدیدترین</a></li>
+            <li><a class="dropdown-item" href="#sec-forms">بر اساس نام</a></li>
+            <li><a class="dropdown-item" href="#sec-forms">بر اساس ماه</a></li>
+          </ul>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>

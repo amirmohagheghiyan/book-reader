@@ -81,7 +81,7 @@ Only the first capability is built in the workshop.
 | Capability | Status | Change name |
 | --- | --- | --- |
 | Documents aligned + Django/Bootstrap base | built | — (prompt 1) |
-| Design system: font, logo, `/design-system/` | not built | — (prompt 2) |
+| Design system: font, logo, `/design-system/` | built | — (prompt 2) |
 | کتابخانه‌ی ماهانه | not built | — |
 
 Update this table only after a step is verified (and, for OpenSpec changes,

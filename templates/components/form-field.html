@@ -1,0 +1,17 @@
+{% load form_extras %}{# Form field. Params: field (bound form field), help (optional override), show_valid (bool) #}
+{% if field.field.widget.input_type == "checkbox" %}
+  <div class="form-check mb-3">
+    {% if field.errors %}{{ field|add_class:"is-invalid" }}{% else %}{{ field }}{% endif %}
+    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="required-mark">(الزامی)</span>{% endif %}</label>
+    {% if help or field.help_text %}<div id="{{ field.id_for_label }}-help" class="form-text">{{ help|default:field.help_text }}</div>{% endif %}
+    {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+  </div>
+{% else %}
+  <div class="mb-3">
+    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="required-mark">(الزامی)</span>{% endif %}</label>
+    {% if field.errors %}{{ field|add_class:"is-invalid" }}{% elif show_valid and field.value %}{{ field|add_class:"is-valid" }}{% else %}{{ field }}{% endif %}
+    {% if help or field.help_text %}<div id="{{ field.id_for_label }}-help" class="form-text">{{ help|default:field.help_text }}</div>{% endif %}
+    {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+    {% if show_valid and not field.errors and field.value %}<div class="valid-feedback d-block">درست است.</div>{% endif %}
+  </div>
+{% endif %}

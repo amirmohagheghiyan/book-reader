@@ -1,0 +1,78 @@
+<section id="sec-data" class="ds-section">
+  <h2 class="mb-1">نمایش اطلاعات</h2>
+  <p class="text-body-secondary">کارت برای هر مورد، جدول برای مقایسه‌ی چند ستون، آکاردئون برای متن بلندی که همیشه لازم نیست باز باشد.</p>
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-xl-4">
+      {% include "components/card.html" with title="حقوق مدنی، جلد اول" text="ناصر کاتوزیان — مهر" badge="تمام‌شده" badge_kind="success" action_url="#sec-data" action_label="مشاهده" elevated=True %}
+    </div>
+    <div class="col-6 col-xl-4">
+      <div class="card card-elevated h-100"><div class="card-body">
+        <div class="text-body-secondary small">کتاب‌های این ماه</div>
+        <div class="display-5 fw-bold text-primary">۳</div>
+        <div class="small text-success">۱ کتاب بیشتر از ماه قبل</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-xl-4">
+      <div class="card card-elevated h-100 bg-brand-gradient"><div class="card-body">
+        <div class="text-body-secondary small">صفحه‌های خوانده‌شده</div>
+        <div class="display-5 fw-bold">۸۴۰</div>
+        <div class="small text-body-secondary">از ۱٬۲۶۰ صفحه</div>
+      </div></div>
+    </div>
+    <div class="col-12">
+      <div class="card card-elevated">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <caption class="visually-hidden">کتاب‌های ماه‌های اخیر</caption>
+            <thead>
+              <tr><th scope="col">کتاب</th><th scope="col">نویسنده</th><th scope="col">ماه</th><th scope="col">وضعیت</th><th scope="col"><span class="visually-hidden">کارها</span></th></tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              <tr>
+                <th scope="row" class="fw-semibold">{{ row.title }}</th>
+                <td>{{ row.author }}</td>
+                <td>{{ row.month }}</td>
+                <td>
+                  {% if row.status == "done" %}<span class="badge text-bg-success">تمام‌شده</span>
+                  {% elif row.status == "reading" %}<span class="badge text-bg-primary">در حال خواندن</span>
+                  {% else %}<span class="badge text-bg-warning">در صف</span>{% endif %}
+                </td>
+                <td class="text-end"><a href="#sec-data" class="btn btn-outline-primary btn-sm">ویرایش</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="list-group shadow-sm">
+        <a href="#sec-data" class="list-group-item list-group-item-action active" aria-current="true">
+          <div class="d-flex justify-content-between"><span class="fw-semibold">حقوق مدنی، جلد اول</span><small>مهر</small></div>
+          <small>ناصر کاتوزیان</small>
+        </a>
+        <a href="#sec-data" class="list-group-item list-group-item-action">
+          <div class="d-flex justify-content-between"><span class="fw-semibold">آیین دادرسی کیفری</span><small class="text-body-secondary">آبان</small></div>
+          <small class="text-body-secondary">علی خالقی</small>
+        </a>
+        <a href="#sec-data" class="list-group-item list-group-item-action disabled" aria-disabled="true">
+          <div class="d-flex justify-content-between"><span class="fw-semibold">حقوق تجارت</span><small>آذر</small></div>
+          <small>ربیعا اسکینی</small>
+        </a>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="accordion shadow-sm" id="ds-accordion">
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#chapter-1" aria-expanded="true" aria-controls="chapter-1">فصل اول: کلیات</button></h3>
+          <div id="chapter-1" class="accordion-collapse collapse show" data-bs-parent="#ds-accordion"><div class="accordion-body">تعریف‌ها و اصطلاح‌های پایه که در بقیه‌ی کتاب تکرار می‌شوند.</div></div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chapter-2" aria-expanded="false" aria-controls="chapter-2">فصل دوم: منابع</button></h3>
+          <div id="chapter-2" class="accordion-collapse collapse" data-bs-parent="#ds-accordion"><div class="accordion-body">فهرست منابع اصلی و ترتیب خواندن پیشنهادی.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,6 @@
+{# Empty state. Params: title, text, action_url, action_label (optional) #}
+<div class="text-center py-5 px-3 bg-soft-gradient rounded-3 border">
+  <h3 class="h5 mb-2">{{ title }}</h3>
+  {% if text %}<p class="text-body-secondary mb-3">{{ text }}</p>{% endif %}
+  {% if action_url %}<a href="{{ action_url }}" class="btn btn-primary">{{ action_label|default:'افزودن' }}</a>{% endif %}
+</div>

@@ -1,0 +1,5 @@
+{# Alert. Params: kind (success|warning|danger|info|error), message, dismissible (bool), title (optional) #}
+<div class="alert alert-{% if kind == 'error' %}danger{% else %}{{ kind|default:'info' }}{% endif %}{% if dismissible %} alert-dismissible fade show{% endif %}" role="alert">
+  {% if title %}<strong class="me-1">{{ title }}</strong>{% endif %}{{ message }}
+  {% if dismissible %}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="بستن"></button>{% endif %}
+</div>

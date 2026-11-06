@@ -1,0 +1,23 @@
+{# Confirm-delete modal. Params: modal_id, item_name, action_url, demo (bool: no real submit) #}
+<div class="modal fade" id="{{ modal_id }}" tabindex="-1" aria-labelledby="{{ modal_id }}-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="{{ modal_id }}-title">«{{ item_name }}» حذف شود؟</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+      </div>
+      <div class="modal-body text-body-secondary">این کار قابل بازگشت نیست.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">انصراف</button>
+        {% if demo %}
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">حذف</button>
+        {% else %}
+          <form method="post" action="{{ action_url }}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">حذف</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

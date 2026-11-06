@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}سیستم طراحی — جزوه‌ساز{% endblock %}
+
+{% block content %}
+{% include "components/page-header.html" with title="سیستم طراحی جزوه‌ساز" lead="همه‌ی رنگ‌ها، فونت‌ها و قطعه‌های آماده، در هر حالتی که ممکن است دیده شوند." breadcrumbs=breadcrumbs %}
+
+<div class="row g-4">
+  <aside class="col-12 col-lg-3">
+    <nav class="ds-nav card card-elevated p-3" aria-label="فهرست بخش‌ها">
+      <h2 class="h6 text-body-secondary mb-2">بخش‌ها</h2>
+      <ul class="nav flex-lg-column flex-row flex-wrap gap-1">
+        {% for anchor, label in sections %}
+          <li class="nav-item"><a class="nav-link py-1 px-2" href="#{{ anchor }}">{{ label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="col-12 col-lg-9 d-flex flex-column gap-5">
+    {% include "core/design-system/brand.html" %}
+    {% include "core/design-system/colors.html" %}
+    {% include "core/design-system/typography.html" %}
+    {% include "core/design-system/buttons.html" %}
+    {% include "core/design-system/forms.html" %}
+    {% include "core/design-system/feedback.html" %}
+    {% include "core/design-system/navigation.html" %}
+    {% include "core/design-system/overlays.html" %}
+    {% include "core/design-system/data.html" %}
+  </div>
+</div>
+
+{% include "components/confirm-modal.html" with modal_id="confirm-delete" item_name="حقوق مدنی، جلد اول" demo=True %}
+{% endblock %}
+
+{% block toasts %}
+<div id="ds-toast" class="toast" role="status" aria-live="polite" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto">جزوه‌ساز</strong>
+    <small class="text-body-secondary">همین حالا</small>
+    <button type="button" class="btn-close ms-2" data-bs-dismiss="toast" aria-label="بستن"></button>
+  </div>
+  <div class="toast-body">کتاب ذخیره شد.</div>
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}جزوه‌ساز{% endblock %}</title>
+  <link rel="icon" href="{% static 'brand/aleflogo.png' %}" type="image/png">
   <link rel="stylesheet" href="{% static 'css/vendor/bootstrap.rtl.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
 </head>
@@ -11,9 +12,12 @@
   <a class="visually-hidden-focusable position-absolute top-0 start-0 m-2 p-2 bg-body" href="#main">پرش به محتوا</a>
 
   <header>
-    <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom" aria-label="ناوبری اصلی">
+    <nav class="navbar navbar-expand-md bg-body-tertiary" aria-label="ناوبری اصلی">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="{% url 'core:home' %}">جزوه‌ساز</a>
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="{% url 'core:home' %}">
+          <img class="brand-logo" src="{% static 'brand/aleflogo.png' %}" alt="لوگوی جزوه‌ساز" width="32" height="32">
+          <span>جزوه‌ساز</span>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"
                 aria-controls="main-nav" aria-expanded="false" aria-label="نمایش یا پنهان‌کردن منو">
           <span class="navbar-toggler-icon"></span>
@@ -25,6 +29,11 @@
                  {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}
                  href="{% url 'core:home' %}">خانه</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link{% if request.resolver_match.url_name == 'design_system' %} active{% endif %}"
+                 {% if request.resolver_match.url_name == 'design_system' %}aria-current="page"{% endif %}
+                 href="{% url 'core:design_system' %}">سیستم طراحی</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -35,10 +44,7 @@
     {% if messages %}
       <div class="mb-3" role="status" aria-live="polite">
         {% for message in messages %}
-          <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="بستن"></button>
-          </div>
+          {% include "components/alert.html" with kind=message.tags message=message dismissible=True %}
         {% endfor %}
       </div>
     {% endif %}
@@ -52,6 +58,9 @@
     </div>
   </footer>
 
+  <div class="toast-container position-fixed bottom-0 start-0 p-3">{% block toasts %}{% endblock %}</div>
+
   <script src="{% static 'js/vendor/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>
